@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         mUsername = ANONYMOUS;
 
-        // Initialize Firebase components
+        //Gets an instance of the FirebaseDatabase class.
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-
+        //Gets a reference to the root of the FirebaseDatabase and then the child known as 'messages'
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
 
         // Initialize references to views
@@ -116,9 +116,10 @@ public class MainActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
-                mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
+                FriendlyMessage mFriendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(),
+                        mUsername,null);
+                mMessagesDatabaseReference.push().setValue(mFriendlyMessage);
                 // Clear input box
                 mMessageEditText.setText("");
             }
