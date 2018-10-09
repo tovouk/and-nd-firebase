@@ -15,6 +15,7 @@
  */
 package com.google.firebase.udacity.friendlychat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.framework.media.ImageHints;
+import com.google.android.gms.cast.framework.media.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+
             }
         });
         mMessageEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(DEFAULT_MSG_LENGTH_LIMIT)});
@@ -159,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Toast.makeText(MainActivity.this, "You're now signed in. Welcome to FriendlyChat.", Toast.LENGTH_SHORT).show();
+                    mUsername = user.getDisplayName();
+                    Toast.makeText(MainActivity.this, "You're now signed in. Welcome to FriendlyChat " + user.getDisplayName() + ".", Toast.LENGTH_SHORT).show();
                 } else {
                     // User is signed out
                     //update from
@@ -174,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                                     ))
                                     .build(),
                             RC_SIGN_IN);
+                    mUsername = ANONYMOUS;
                 }
             }
         };
@@ -202,6 +209,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.sign_out_menu:
+                FirebaseAuth.getInstance().signOut();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }
